@@ -17,6 +17,7 @@
     margin: 4rem auto;
 }
 @mixin mobileContainerSize{
+    margin-top: 6vh;
     width: 95%;
 }
 @mixin mobile{
@@ -225,6 +226,12 @@ header{
     margin-top: 10vh;
     @include flex(row);
     padding-inline: 10rem;
+    @include mobile{
+        @include mobileContainerSize;
+        flex-direction: column-reverse;
+        padding-inline: 3rem;
+
+    }
 
     >div{
         flex: 1;
@@ -241,25 +248,51 @@ header{
 
 // CreateProfile component styling
 #create{
-    @include desktopSectionSize;
-    margin: auto;
     @include flex(column);
-    height: 100vh;
-
+    width: 70%;
+    margin: auto;
+    margin-top: 15vh;
+    @include mobile{
+        @include mobileContainerSize;
+    }
+    
+    #avatar{
+        width: 100%;
+        border: 0.05px solid $grey;
+        border-radius: 1rem;
+    }
     img{
-        width: 200px;
+        width: 150px;
         border-radius: 50%;
+        margin: auto;
     }
 
     form{
         width: 100%;
         padding: 1rem;
-        @include flex(column);
-
-        input{
-            width: 50%;
-            padding: 1rem;
+        text-align: center;
+        border: 0.05px solid $grey;
+        border-radius: 1rem;
+        
+        > div{
+            @include flex(row);
+            padding-block: 0.5rem;
+            margin: auto;
         }
+        .profile--icon{
+            color: $extras;
+            font-size: 1.5rem;
+        }
+        input{
+            width: 40%;
+            padding: 1rem;
+            @include mobile{
+                width: 100%;
+            }
+        }
+
+        
     }
+
 
 }

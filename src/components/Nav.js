@@ -43,6 +43,7 @@ export default function Nav(){
                     <h2><a href="/" >getLinked</a></h2>
                 </div>
                 <ul className="nav--element1">
+                    <li><HashLink to="/">HOME <span>us</span></HashLink></li>
                     <li><HashLink to="#contactContainer">Contact <span>us</span></HashLink></li>
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
@@ -55,10 +56,11 @@ export default function Nav(){
             {/* Mobile Navigation Menu */}
             <div id="mNav">
                 <ul>
-                <li><HashLink to="#contactContainer">'Contact <span>us'</span></HashLink></li>
+                    <li><HashLink to="/">HOME </HashLink></li>
+                    <li><HashLink to="#contactContainer">'Contact <span>us'</span></HashLink></li>
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
-                    <li><HashLink to="#contactContainer" id="hireButton">create links</HashLink></li>
+                    <li><Link to="/create" id="hireButton">create links</Link></li>
                 </ul>
                 {/* <p>&copy; Tech Desk Inc.</p> */}
             </div>
