@@ -278,7 +278,7 @@ header h2 {
   gap: 1rem;
   width: 70%;
   margin: auto;
-  margin-top: 15vh;
+  margin-top: 10vh;
 }
 @media only screen and (max-width: 820px) {
   #create {
@@ -290,6 +290,7 @@ header h2 {
   width: 100%;
   border: 0.05px solid rgb(214, 209, 209);
   border-radius: 1rem;
+  padding: 1rem;
 }
 #create img {
   width: 150px;

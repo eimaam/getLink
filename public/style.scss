@@ -251,7 +251,7 @@ header{
     @include flex(column);
     width: 70%;
     margin: auto;
-    margin-top: 15vh;
+    margin-top: 10vh;
     @include mobile{
         @include mobileContainerSize;
     }
@@ -260,6 +260,7 @@ header{
         width: 100%;
         border: 0.05px solid $grey;
         border-radius: 1rem;
+        padding: 1rem;
     }
     img{
         width: 150px;
