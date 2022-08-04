@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, BrowserRouter} from "react-rout
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import CreateProfile from "./components/CreateProfile";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       <Nav />
       <Routes>
         <Route exact path="/" element={<Header />} /> 
-        <Route exact path="/create" element={<CreateProfile />} /> 
+        <Route path="/create" element={<CreateProfile />} /> 
+        <Route path="/profile" element={<Profile />} /> 
       </Routes>
     </Router>
   );

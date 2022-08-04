@@ -44,10 +44,11 @@ export default function Nav(){
                 </div>
                 <ul className="nav--element1">
                     <li><HashLink to="/">HOME </HashLink></li>
-                    <li><HashLink to="#contactContainer">Contact <span>us</span></HashLink></li>
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
-                    <li><Link to="/create" id="hireButton">create links</Link></li>
+                    <li><HashLink to="#contactContainer">Contact <span>us</span></HashLink></li>
+                    <li><Link to="/create" id="customButton">create links</Link></li>
+                    <li><Link to="/profile" id="customButton">profile</Link></li>
                 </ul>
                 <FaBars className="FaBars" onClick={showHideNav}/>
                 <FaTimes className="FaTimes" onClick={showHideNav}/>
@@ -57,9 +58,9 @@ export default function Nav(){
             <div id="mNav">
                 <ul>
                     <li><HashLink to="/">HOME </HashLink></li>
-                    <li><HashLink to="#contactContainer">'Contact <span>us'</span></HashLink></li>
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
+                    <li><HashLink to="#contactContainer">'Contact <span>us'</span></HashLink></li>
                     <li><Link to="/create" id="hireButton">create links</Link></li>
                 </ul>
                 {/* <p>&copy; Tech Desk Inc.</p> */}

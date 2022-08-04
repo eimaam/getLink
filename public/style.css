@@ -208,7 +208,7 @@ nav img {
   height: 55px;
 }
 
-#hireButton {
+#customButton {
   background-color: #FFF486;
   color: #141B1F;
   padding: 0.5rem;
@@ -286,25 +286,14 @@ header h2 {
     width: 95%;
   }
 }
-#create #avatar {
-  width: 100%;
-  border: 0.05px solid rgb(214, 209, 209);
-  border-radius: 1rem;
-  padding: 1rem;
-}
-#create img {
-  width: 150px;
-  border-radius: 50%;
-  margin: auto;
-}
-#create form {
+#create form, #create .form--data {
   width: 100%;
   padding: 1rem;
   text-align: center;
-  border: 0.05px solid rgb(214, 209, 209);
-  border-radius: 1rem;
+  border: 1px solid rgb(214, 209, 209);
+  border-radius: 0.5rem;
 }
-#create form > div {
+#create form > div, #create .form--data > div {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -313,16 +302,90 @@ header h2 {
   padding-block: 0.5rem;
   margin: auto;
 }
-#create form .profile--icon {
-  color: #FFF486;
-  font-size: 1.5rem;
-}
-#create form input {
+#create form input, #create .form--data input {
   width: 40%;
   padding: 1rem;
 }
 @media only screen and (max-width: 820px) {
-  #create form input {
+  #create form input, #create .form--data input {
     width: 100%;
+  }
+}
+
+.profile--icon {
+  color: #FFF486;
+  font-size: 1.5rem;
+}
+
+#avatar {
+  width: 100%;
+  border: 1px solid rgb(214, 209, 209);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+#avatar .header--text {
+  width: 400px;
+  text-align: center;
+}
+#avatar img {
+  width: 150px;
+  border-radius: 50%;
+  margin: auto;
+}
+
+#profile {
+  width: 70%;
+  margin: 10vh auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+@media only screen and (max-width: 820px) {
+  #profile {
+    margin-top: 6vh;
+    width: 95%;
+  }
+}
+#profile > div {
+  width: 100%;
+}
+#profile .form--data {
+  border-radius: 1rem;
+  border: 1px solid rgb(214, 209, 209);
+  border-radius: 0.5rem;
+}
+#profile .form--data > div {
+  width: 30%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-block: 1rem;
+  justify-content: center;
+}
+@media only screen and (max-width: 820px) {
+  #profile .form--data > div {
+    width: 100%;
+  }
+}
+#profile .form--data h3 {
+  margin: auto;
+  width: 300px;
+  padding: 0.5rem 1rem;
+  border: 1px dashed rgb(214, 209, 209);
+  letter-spacing: 2px;
+}
+@media only screen and (max-width: 820px) {
+  #profile .form--data h3 {
+    font-size: 1rem;
   }
 }/*# sourceMappingURL=style.css.map */

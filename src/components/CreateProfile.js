@@ -2,10 +2,15 @@ import React, { useState } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
 
 import avatar from "../Assets/avatar.jpg"
+
+function getData(e){
+  console.log(e.target.value)
+}
+
 let inputs = [
   {
     icon: <FaInstagram className="profile--icon" />,
-    input: <input type="text" placeholder='Instagram Handle'/>
+    input: <input type="text" placeholder='Instagram Handle' onChange={getData}/>
   },
   {
     icon: <FaTwitter className="profile--icon" />,
@@ -33,7 +38,7 @@ let inputs = [
   },
   {
     icon: <FaMusic className="profile--icon" />,
-    input: <input type="text" placeholder='Audiomack'/>
+    input: <input type="text" placeholder='Audiomack' />
   }
 ]
 
@@ -66,6 +71,10 @@ export default function CreateProfile() {
     <div id='create'>
         <div id='avatar'>
           <img src={avatar} alt="avatar" />
+          <div className='header--text'>
+            <h3>$Username</h3>
+            <i>'Bio goes here...Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, voluptate?' </i>
+          </div>
         </div>
         <form>
           {mappedInputs}
