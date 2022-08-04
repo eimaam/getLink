@@ -47,7 +47,7 @@ export default function Nav(){
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
                     <li><HashLink to="#contactContainer">Contact <span>us</span></HashLink></li>
-                    <li><Link to="/create" id="customButton">create links</Link></li>
+                    <li><Link to="/signup" id="customButton">create links</Link></li>
                     <li><Link to="/profile" id="customButton">profile</Link></li>
                 </ul>
                 <FaBars className="FaBars" onClick={showHideNav}/>

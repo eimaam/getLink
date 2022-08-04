@@ -56,7 +56,6 @@ html, body{
     color: $default;
     background-color: $bgColor;
     line-height: 1.6;
-    overflow-x: hidden;
     word-wrap: break-word;
 }
 a{
@@ -130,7 +129,7 @@ button, input[type=button]{
     font-size: 1rem;
     font-weight: bolder;
     padding: 0.5rem;
-    border: none;
+    @include border;
     background-color: $extras;
     transition: 1000ms all;
     color: $bgColor;
@@ -344,4 +343,26 @@ header{
         }
     }
     
+}
+
+// SIGN UP component styling
+#signup{
+    @include desktopSectionSize;
+    height: 90vh;
+    @include flex(column);
+    
+    .signup--div{
+        padding: 1rem;
+        width: 70%;
+        @include flex(column);
+        @include border;
+
+        input, button{
+            width: 50%;
+        }
+    }
+    
+}
+.login--div{
+    @extend #signup;
 }

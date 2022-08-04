@@ -1,6 +1,7 @@
 import React from 'react'
 
 import landingImage from "../Assets/Landing.svg";
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
@@ -16,7 +17,7 @@ export default function Header() {
             </ul>
             <h3>Let your your customers/fans reach all your platforms in ONE click!</h3>
             <br />
-            <button>CREATE NOW!</button>
+            <Link to="/signup"><button>CREATE NOW!</button></Link>
         </div>
         <div>
             <img src={landingImage} alt="landing image"  id='landingImage'/>

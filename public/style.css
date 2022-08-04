@@ -46,7 +46,6 @@ html, body {
   color: rgb(226, 221, 221);
   background-color: #141B1F;
   line-height: 1.6;
-  overflow-x: hidden;
   word-wrap: break-word;
 }
 
@@ -137,7 +136,8 @@ button, input[type=button] {
   font-size: 1rem;
   font-weight: bolder;
   padding: 0.5rem;
-  border: none;
+  border: 1px solid rgb(214, 209, 209);
+  border-radius: 0.5rem;
   background-color: #FFF486;
   transition: 1000ms all;
   color: #141B1F;
@@ -388,4 +388,29 @@ header h2 {
   #profile .form--data h3 {
     font-size: 1rem;
   }
+}
+
+#signup, .login--div {
+  width: 70%;
+  margin: 10vh auto;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+#signup .signup--div, .login--div .signup--div {
+  padding: 1rem;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid rgb(214, 209, 209);
+  border-radius: 0.5rem;
+}
+#signup .signup--div input, .login--div .signup--div input, #signup .signup--div button, .login--div .signup--div button {
+  width: 50%;
 }/*# sourceMappingURL=style.css.map */
