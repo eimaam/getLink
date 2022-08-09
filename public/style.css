@@ -394,6 +394,10 @@ header h2 {
     font-size: 1rem;
   }
 }
+#profile .form--data p {
+  margin: auto;
+  text-align: center;
+}
 
 #signup, .login--div {
   width: 70%;

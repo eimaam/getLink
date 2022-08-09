@@ -1,7 +1,8 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
 
-import avatar from "../Assets/avatar.jpg"
+
 
 const data = [
     {
@@ -49,21 +50,59 @@ const data = [
 export default function Profile() {
     const mappedData = data.map((element, index) => {
         return (
-            <div>
+            <div key={index}>
                 {element.icon}
-                <a href={element.link} key={index}>
+                <a href={element.link} >
                     <h3>{element.title}</h3>
                 </a>
             </div>
         )
     })
-  return (
+
+    const [username, setUsername] = useState(""); //random username state management
+    const [avatar, setAvatar] = useState({});
+    const [bio, setBio] = useState("");
+    const random = Math.floor(Math.random() * 10) //generate random number
+    
+   const fetchData = () =>{
+        let urls = [
+            'https://jsonplaceholder.typicode.com/users',
+            'https://jsonplaceholder.typicode.com/photos',
+            'https://jsonplaceholder.typicode.com/posts'
+        ]
+       
+       axios.all(urls.map(url => axios.get(url))).then((data) => {
+            setUsername(data[0].data)
+            setAvatar(data[1].data[random])
+            setBio(data[2].data)
+
+            
+        })
+    .catch(err => console.log(err))   
+           
+    }    
+    
+    // const fetchData = () => {
+    //     const url = 'https://jsonplaceholder.typicode.com/users'
+    //     axios.get(url)
+    //         .then(response => {
+    //             console.log(response)
+    //         })
+    // }
+    
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    return (
     <div id='profile'>
         <div id='avatar'>
-          <img src={avatar} alt="avatar" />
+          <img src={avatar.url} alt="avatar" />
           <div className='header--text'>
-            <h3>$Username</h3>
-            <i>'Bio goes here...Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, voluptate?' </i>
+            {username ? <h3>{username[0].name}</h3> : <p>Loading...</p>}
+            <h4>Bio:</h4>
+            {bio ? <i>{bio[random].body}</i> : <p>Loading...</p>}
+            
           </div>
         </div>
         <div className='form--data'>
