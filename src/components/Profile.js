@@ -82,14 +82,6 @@ export default function Profile() {
            
     }    
     
-    // const fetchData = () => {
-    //     const url = 'https://jsonplaceholder.typicode.com/users'
-    //     axios.get(url)
-    //         .then(response => {
-    //             console.log(response)
-    //         })
-    // }
-    
     useEffect(() => {
         fetchData()
     }, [])
@@ -99,7 +91,7 @@ export default function Profile() {
         <div id='avatar'>
           <img src={avatar.url} alt="avatar" />
           <div className='header--text'>
-            {username ? <h3>{username[0].name}</h3> : <p>Loading...</p>}
+            {username ? <h3>{username[random].name}</h3> : <p>Loading...</p>}
             <h4>Bio:</h4>
             {bio ? <i>{bio[random].body}</i> : <p>Loading...</p>}
             
