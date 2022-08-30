@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
-
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 import avatar from "../Assets/avatar.jpg"
+
 
 function getData(e){
   console.log(e.target.value)
@@ -45,6 +47,8 @@ let inputs = [
 
 
 export default function CreateProfile() {
+  const auth = getAuth();
+  const navigate = useNavigate()
 
   const [state, setState] = useState({});
 
@@ -67,6 +71,14 @@ export default function CreateProfile() {
     )
   }
 
+  // Hook for checking if User is Logged in
+  useEffect(() => {
+    onAuthStateChanged(auth, data => {
+        console.log(data)
+        if(!data) navigate('../signup')
+    })
+  }, [])
+console.log(state)
   return (
     <div id='create'>
         <div id='avatar'>

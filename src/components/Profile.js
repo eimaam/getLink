@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
-
-
+import { useNavigate } from 'react-router-dom'
+import { getAuth, onAuthStateChanged, signOut} from 'firebase/auth'
 
 const data = [
     {
@@ -48,6 +48,22 @@ const data = [
 ]
 
 export default function Profile() {
+    const auth = getAuth()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        onAuthStateChanged(auth, data => {
+            console.log(data)
+            if(!data) navigate('../login')
+        })
+    }, [])
+
+    // SIGNOUT Function
+    function handleSignOut(){
+        signOut(auth)
+        alert('SIGNED OUT successfully!')
+    }
+
     const mappedData = data.map((element, index) => {
         return (
             <div key={index}>
@@ -100,6 +116,7 @@ export default function Profile() {
         <div className='form--data'>
             {mappedData}
         </div>
+        <button onClick={handleSignOut}>SIGN OUT</button>
     </div>
   )
 }

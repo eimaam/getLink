@@ -1,7 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { HashLink } from "react-router-hashlink"
 import { FaBars, FaTimes } from "react-icons/fa"
+
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 import avatar from "../Assets/avatar.jpg"
 
@@ -35,6 +37,23 @@ export function hideMobileNav(){
 }
 
 export default function Nav(){
+    const auth = getAuth()
+    const [isLogged, setIsLogged] = useState(false);
+
+    useEffect(() => {
+        onAuthStateChanged(auth, data => {
+            if(data){
+                setIsLogged(true)
+            }
+            console.log(data)
+            console.log(isLogged)
+        })
+    }, [isLogged])
+    
+    function handleSignOut(){
+        signOut(auth)
+        alert('SIGNED OUT successfully!')
+    }
     return (
         <React.Fragment>
             <nav id="nav">
@@ -47,8 +66,9 @@ export default function Nav(){
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
                     <li><HashLink to="#contactContainer">Contact <span>us</span></HashLink></li>
-                    <li><Link to="/signup" id="customButton">create links</Link></li>
-                    <li><Link to="/profile" id="customButton">profile</Link></li>
+                    <li><NavLink to="/create" id="customButton">create links</NavLink></li>
+                    <li><NavLink to="/profile" id="customButton">profile</NavLink></li>
+                    {isLogged && <li id="customButton" onClick={handleSignOut}>SIGN OUT</li>}
                 </ul>
                 <FaBars className="FaBars" onClick={showHideNav}/>
                 <FaTimes className="FaTimes" onClick={showHideNav}/>
@@ -61,7 +81,8 @@ export default function Nav(){
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
                     <li><HashLink to="#contactContainer">'Contact <span>us'</span></HashLink></li>
-                    <li><Link to="/create" id="hireButton">create links</Link></li>
+                    <li><NavLink to="/create" id="hireButton">create links</NavLink></li>
+                    {isLogged && <li id="customButton" onClick={handleSignOut}>SIGN OUT</li>}
                 </ul>
                 {/* <p>&copy; Tech Desk Inc.</p> */}
             </div>
