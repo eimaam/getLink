@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from 'firebase/firestore'
+import { getAuth } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -10,6 +11,7 @@ import { getFirestore } from 'firebase/firestore'
 const firebaseConfig = {
   apiKey: "AIzaSyC4UQHHktp7vLAW0qhOG0VNLGPx-OmN1oM",
   authDomain: "getlinks-da879.firebaseapp.com",
+  databaseURL: "https://getlinks-da879-default-rtdb.firebaseio.com",
   projectId: "getlinks-da879",
   storageBucket: "getlinks-da879.appspot.com",
   messagingSenderId: "927669997260",
@@ -21,3 +23,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const database = getFirestore(app)
+export const auth = getAuth(app)

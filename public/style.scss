@@ -64,6 +64,12 @@ html, body{
     color: red;
     text-align: center;
 }
+.success{
+    margin: auto;
+    font-weight: 900;
+    color: green;
+    text-align: center;
+}
 a{
     color: $default;
     text-decoration: none;
@@ -127,6 +133,8 @@ textarea{
         font-size: 16px;
     }
 }
+
+
 
 button, input[type=submit]{
     display: inline-block;
@@ -278,6 +286,12 @@ header{
         input{
             width: 40%;
             padding: 1rem;
+
+            &::placeholder{
+                text-transform: capitalize;
+                font-weight: bold;
+            }
+
             @include mobile{
                 width: 100%;
             }

@@ -2,7 +2,10 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
 import { useNavigate } from 'react-router-dom'
-import { getAuth, onAuthStateChanged, signOut} from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
+import { collection, getDoc, getDocs } from 'firebase/firestore'
+import { app, database, auth} from '../firebaseConfig'
+import { useAuth } from '../context/AuthContext'
 
 const data = [
     {
@@ -48,21 +51,37 @@ const data = [
 ]
 
 export default function Profile() {
-    const auth = getAuth()
-    const navigate = useNavigate()
+    const { logOut } = useAuth();
 
+    const navigate = useNavigate()
+    
+    const [userDetail, setUserDetail] = useState([])
+    const DocRef = collection(database, 'userDetails')
+
+    const fetchUserDetail = async() => {
+        getDocs(DocRef)
+        .then(res => {
+            console.log(res.docs.map(item => {
+                return {...item.data(), id: item.id} 
+            }))
+        })
+        .catch(err => {
+            alert(err.code)
+        })
+    }
+
+    // fetch User's detail on load
+    useEffect(() => {
+        fetchUserDetail()
+    }, [])
+
+    // check if user is Logged in... navigate to LOGIN page if not logged in
     useEffect(() => {
         onAuthStateChanged(auth, data => {
-            console.log(data)
             if(!data) navigate('../login')
         })
     }, [])
 
-    // SIGNOUT Function
-    function handleSignOut(){
-        signOut(auth)
-        alert('SIGNED OUT successfully!')
-    }
 
     const mappedData = data.map((element, index) => {
         return (
@@ -116,7 +135,7 @@ export default function Profile() {
         <div className='form--data'>
             {mappedData}
         </div>
-        <button onClick={handleSignOut}>SIGN OUT</button>
+        <button onClick={logOut}>SIGN OUT</button>
     </div>
   )
 }

@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { app } from '../firebaseConfig'
+import { app, auth } from '../firebaseConfig'
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Signup() {
-    let auth = getAuth();
-    const [error, setError] = useState('')
+    const { error, setError, isLogged } = useAuth();
+
+    const navigate = useNavigate();
+
 
     const [data, setData] = useState({
             email:"",
@@ -27,7 +30,7 @@ export default function Signup() {
         console.log(data)
     };
 
-    function handleSubmit(e){
+    function signUp(e){
         e.preventDefault()
         if(data.password != data.confirm_password){
             return setError('Passwords do not match')
@@ -50,16 +53,11 @@ export default function Signup() {
     }
     
     useEffect(() => {
-        onAuthStateChanged(auth, data => {
-            console.log(data)
-            if(data){
-                setError('SIGNED UP successfully... ')
-            }
-        })
-    }, [error])
+        isLogged && navigate('../create')
+    }, [])
     
   return (
-    <form id='signup' onSubmit={handleSubmit}>
+    <form id='signup' onSubmit={signUp}>
         <div className='signup--div'>
                 {/* {mappedData} */}
                 <label htmlFor="Email">

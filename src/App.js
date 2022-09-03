@@ -10,11 +10,14 @@ import Login from "./components/Login";
 import { app } from './firebaseConfig'
 import ProfileDetails from "./components/ProfileDetails";
 import ResetPass from "./components/ResetPass";
+import { AuthProvider } from "./context/AuthContext";
 
 
 function App() {
+  const result = process.env.REA
   return (
     <Router>
+      <AuthProvider>
       <Nav />
       <Routes>
         <Route exact path="/" element={<Header />} /> 
@@ -25,6 +28,7 @@ function App() {
         <Route path="/test" element={<ProfileDetails />} /> 
         <Route exact path="/reset" element={<ResetPass />} /> 
       </Routes>
+    </AuthProvider>
     </Router>
   );
 }
