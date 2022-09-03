@@ -7,10 +7,9 @@ import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Signup() {
-    const { error, setError, isLogged } = useAuth();
+    const { error, setError, isLogged, user} = useAuth();
 
     const navigate = useNavigate();
-
 
     const [data, setData] = useState({
             email:"",
@@ -27,7 +26,6 @@ export default function Signup() {
             [name]: value
         })
         )
-        console.log(data)
     };
 
     function signUp(e){
@@ -54,7 +52,7 @@ export default function Signup() {
     
     useEffect(() => {
         isLogged && navigate('../create')
-    }, [])
+    }, [user])
     
   return (
     <form id='signup' onSubmit={signUp}>

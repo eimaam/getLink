@@ -51,7 +51,7 @@ const data = [
 ]
 
 export default function Profile() {
-    const { logOut } = useAuth();
+    const { logOut, user } = useAuth();
 
     const navigate = useNavigate()
     
@@ -110,10 +110,8 @@ export default function Profile() {
             setUsername(data[0].data)
             setAvatar(data[1].data[random])
             setBio(data[2].data)
-
-            
         })
-    .catch(err => console.log(err))   
+        .catch(err => console.log(err))   
            
     }    
     
@@ -124,9 +122,9 @@ export default function Profile() {
     return (
     <div id='profile'>
         <div id='avatar'>
-          <img src={avatar.url} alt="avatar" />
+          <img src={user.photoURL} alt="avatar" />
           <div className='header--text'>
-            {username ? <h3>{username[random].name}</h3> : <p>Loading...</p>}
+            {user ? <h3>{user.displayName}</h3> : <p>Loading...</p>}
             <h4>Bio:</h4>
             {bio ? <i>{bio[random].body}</i> : <p>Loading...</p>}
             
@@ -135,6 +133,7 @@ export default function Profile() {
         <div className='form--data'>
             {mappedData}
         </div>
+        <button>EDIT PROFILE</button>
         <button onClick={logOut}>SIGN OUT</button>
     </div>
   )

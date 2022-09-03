@@ -21,6 +21,7 @@ export function AuthProvider({children}){
     const [user, setUser] = useState({
         email:"",
         password:"",
+        displayName: ""
       })
 
 
@@ -34,9 +35,9 @@ export function AuthProvider({children}){
                         password: user.password
                     })
                 }
-                console.log(data)
-                console.log(isLogged)
-                console.log(user.email)
+                // console.log(data)
+                // console.log(isLogged)
+                // console.log(user.email)
             })
             }
             
@@ -49,7 +50,11 @@ export function AuthProvider({children}){
         e.preventDefault()
         signInWithEmailAndPassword(auth, user.email, user.password)
             .then(res => {
-                console.log(res.user)
+                setUser(prevData => ({
+                    ...prevData,
+                    displayName: res.displayName,
+                    photoURL: res.photoURL
+                }))
             })
             .catch(err => {
               if(err.code === 'auth/network-request-failed'){
@@ -72,10 +77,12 @@ export function AuthProvider({children}){
         signInWithPopup(auth, googleProvider)
             .then(res => {
                 setUser(res.user)
+                console.log(res)
             })
             .catch(err => {
                 setError(err.code)
             })
+            
       }
 
       

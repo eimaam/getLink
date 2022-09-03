@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
-import { app, database } from '../firebaseConfig'
+import { app, auth, database } from '../firebaseConfig'
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDoc, addDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom';
 import avatar from "../Assets/avatar.jpg"
+import { useAuth } from '../context/AuthContext';
 
 // Data
 let inputs = [
@@ -45,7 +46,8 @@ let inputs = [
 
 
 export default function CreateProfile() {
-  const auth = getAuth();
+  const { isLogged, user } = useAuth();
+
   const navigate = useNavigate()
   const DocRef = collection(database, 'userDetails')
 
@@ -129,7 +131,7 @@ export default function CreateProfile() {
           console.log(data)
           if(!data) navigate('../signup')
       })
-    }, [])
+    }, [user])
 
 
   return (
@@ -137,7 +139,7 @@ export default function CreateProfile() {
         <div id='avatar'>
           <img src={avatar} alt="avatar" />
           <div className='header--text'>
-            <h3>$Username</h3>
+            <h3>{user.email}</h3>
             <i>'Bio goes here...Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, voluptate?' </i>
           </div>
         </div>
