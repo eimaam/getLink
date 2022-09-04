@@ -14,7 +14,6 @@ import { AuthProvider } from "./context/AuthContext";
 
 
 function App() {
-  const result = process.env.REA
   return (
     <Router>
       <AuthProvider>

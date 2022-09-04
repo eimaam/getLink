@@ -58,22 +58,22 @@ export default function Profile() {
     const [userDetail, setUserDetail] = useState([])
     const DocRef = collection(database, 'userDetails')
 
-    const fetchUserDetail = async() => {
-        getDocs(DocRef)
-        .then(res => {
-            console.log(res.docs.map(item => {
-                return {...item.data(), id: item.id} 
-            }))
-        })
-        .catch(err => {
-            alert(err.code)
-        })
-    }
+    // const fetchUserDetail = async() => {
+        // getDocs(DocRef)
+        // .then(res => {
+        //     console.log(res.docs.map(item => {
+        //         return {...item.data(), id: item.id} 
+        //     }))
+        // })
+        // .catch(err => {
+        //     alert(err.code)
+        // })
+    // }
 
-    // fetch User's detail on load
-    useEffect(() => {
-        fetchUserDetail()
-    }, [])
+    // // fetch User's detail on load
+    // useEffect(() => {
+    //     fetchUserDetail()
+    // }, [])
 
     // check if user is Logged in... navigate to LOGIN page if not logged in
     useEffect(() => {
@@ -93,41 +93,28 @@ export default function Profile() {
             </div>
         )
     })
+    
 
     const [username, setUsername] = useState(""); //random username state management
     const [avatar, setAvatar] = useState({});
     const [bio, setBio] = useState("");
     const random = Math.floor(Math.random() * 10) //generate random number
     
-   const fetchData = () =>{
-        let urls = [
-            'https://jsonplaceholder.typicode.com/users',
-            'https://jsonplaceholder.typicode.com/photos',
-            'https://jsonplaceholder.typicode.com/posts'
-        ]
-       
-       axios.all(urls.map(url => axios.get(url))).then((data) => {
-            setUsername(data[0].data)
-            setAvatar(data[1].data[random])
-            setBio(data[2].data)
-        })
-        .catch(err => console.log(err))   
-           
-    }    
+   
+        
     
-    useEffect(() => {
-        fetchData()
-    }, [])
+    // useEffect(() => {
+    //     fetchData()
+    // }, [])
 
     return (
     <div id='profile'>
         <div id='avatar'>
           <img src={user.photoURL} alt="avatar" />
           <div className='header--text'>
-            {user ? <h3>{user.displayName}</h3> : <p>Loading...</p>}
+            {user.displayName ? <h3>{user.displayName}</h3> : <h3>{user.email}</h3>}
             <h4>Bio:</h4>
-            {bio ? <i>{bio[random].body}</i> : <p>Loading...</p>}
-            
+            <i>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, repudiandae.</i> 
           </div>
         </div>
         <div className='form--data'>

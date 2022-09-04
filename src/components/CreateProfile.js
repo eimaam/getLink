@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
 import { app, auth, database } from '../firebaseConfig'
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, getDoc, addDoc } from 'firebase/firestore'
+import { collection, getDoc, addDoc, doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom';
 import avatar from "../Assets/avatar.jpg"
 import { useAuth } from '../context/AuthContext';
@@ -91,28 +91,42 @@ export default function CreateProfile() {
       ...prevData, 
       [name]:value
     }))
-    console.log(data)
   }
 
   // function to handle Form submit
-  function handleSubmit(e){
+  const updateProfile = async (e) => {
     e.preventDefault();
-      addDoc(DocRef, {
-        instagram: data.instagram,
-        twitter: data.twitter,
-        snapchat: data.snapchat,
-        portfolio: data.portfolio,
-        youtube: data.youtube,
-        apple: data.apple,
-        spotify: data.spotify,
-        audiomack: data.audiomack,
-      })
-      .then((res) => {
-        setMessage('Note Uploaded successfully!')
-      })
-      .catch((error) => {
+    // const document = await getDoc(DocRef)
+    try{
+      
+            await setDoc(doc(collection(database, 'userDetails'), user.email),{
+            instagram: data.instagram,
+            twitter: data.twitter,
+            snapchat: data.snapchat,
+            portfolio: data.portfolio,
+            youtube: data.youtube,
+            apple: data.apple,
+            spotify: data.spotify,
+            audiomack: data.audiomack,
+        }, {merge : true})
+        } 
+    // addDoc(DocRef, {
+    //     email: user.email,
+    //     instagram: data.instagram,
+    //     twitter: data.twitter,
+    //     snapchat: data.snapchat,
+    //     portfolio: data.portfolio,
+    //     youtube: data.youtube,
+    //     apple: data.apple,
+    //     spotify: data.spotify,
+    //     audiomack: data.audiomack,
+    //   })
+    //   .then((res) => {
+    //     setMessage('Note Uploaded successfully!')
+    //   })
+      catch(error){
         alert(error.message)
-      })
+      }
   }
   
   
@@ -128,8 +142,8 @@ export default function CreateProfile() {
     // Hook for checking if User is Logged in
     useEffect(() => {
       onAuthStateChanged(auth, data => {
-          console.log(data)
           if(!data) navigate('../signup')
+          !isLogged && navigate('../signup')
       })
     }, [user])
 
@@ -143,7 +157,7 @@ export default function CreateProfile() {
             <i>'Bio goes here...Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, voluptate?' </i>
           </div>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={updateProfile}>
           {mappedInputs}
           <button onClick={addField}>Add More Links</button> 
           {message && <p className='success'>{message}</p>}

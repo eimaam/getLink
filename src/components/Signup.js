@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { app, auth } from '../firebaseConfig'
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-import { useEffect } from 'react';
+import { app, auth, database} from '../firebaseConfig'
 import { useAuth } from '../context/AuthContext';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
 
 export default function Signup() {
-    const { error, setError, isLogged, user} = useAuth();
-
+    const DocRef = collection(database, 'userDetails')
+    const { error, setError, isLogged, user, setUser} = useAuth();
     const navigate = useNavigate();
-
     const [data, setData] = useState({
             email:"",
+            username: "",
             password:"",
             confirm_password:"",
         }
@@ -20,7 +20,7 @@ export default function Signup() {
 
     function handleChange(e){
         const {name, value} = e.target
-        
+    
         setData(prevData => ({
             ...prevData,
             [name]: value
@@ -35,7 +35,13 @@ export default function Signup() {
         }else{
             createUserWithEmailAndPassword(auth, data.email, data.password)
             .then(res => {
-                console.log(res.user)
+                setUser({
+                    email: data.email,
+                    photoURL: res.photoURL,
+                    displayName: res.displayName,
+                    username: data.username
+                })
+                
             })
             .catch(err => {
                 if(err.code === 'auth/weak-password'){
@@ -45,7 +51,7 @@ export default function Signup() {
                 }else{
                     alert(err.code)
                 }
-                console.log(err.code)
+                
             })
         }
     }
@@ -65,6 +71,17 @@ export default function Signup() {
                 type="text" 
                 name='email' 
                 value={data.email} 
+                required
+                onChange={(e) => handleChange(e)}
+                />
+
+                <label htmlFor="Email">
+                    Username:
+                </label>
+                <input 
+                type="text" 
+                name='username' 
+                value={data.username} 
                 required
                 onChange={(e) => handleChange(e)}
                 />

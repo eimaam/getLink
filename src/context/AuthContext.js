@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { createContext, useContext } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 // firebase auth and firestore imports
 import { GoogleAuthProvider, onAuthStateChanged, signOut, signInWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
-import { collection, getDoc, getDocs } from 'firebase/firestore'
+import { doc, addDoc, collection, getDoc, getDocs, onSnapshot, orderBy, query, where, setDoc } from 'firebase/firestore'
 import { app, database, auth } from '../firebaseConfig'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { async } from '@firebase/util'
 
 const AuthContext = createContext();
 
@@ -18,43 +19,53 @@ export function AuthProvider({children}){
     const googleProvider = new GoogleAuthProvider();
     const [error, setError] = useState('')
     const [isLogged, setIsLogged] = useState();
-    const [user, setUser] = useState({
-        email:"",
-        password:"",
-        displayName: ""
-      })
+    const [user, setUser] = useState({})
+    const [userInfo, setUserInfo] = useState({})
 
+    // firestore
+    const DocRef = collection(database, 'userDetails');
 
       useEffect(() => {
-        function getUserData(){
-            onAuthStateChanged(auth, data => {
+        const getUserData = async () => {
+            onAuthStateChanged(auth, async data => {
                 if(data){
-                    setIsLogged(true)
-                    setUser({
-                        email: user.email,
-                        password: user.password
-                    })
+                    try{
+                        const document = await getDoc(doc(database, "userDetails", data.email))
+                        if(!document.exists()){
+                            await setDoc(doc(collection(database, "userDetails"), data.email),{
+                            displayName: data.displayName,
+                            photoURL: data.photoURL,
+                        })
+                        }
+                        
+                        const querySnapshot = await getDocs(collection(database, "userDetails"));
+                        querySnapshot.forEach((doc) => {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                        })
+                        setUser(data)
+                        setIsLogged(!isLogged)
+                    }
+                    catch(err){
+                        console.log(err.message)
+                    }
                 }
-                // console.log(data)
-                // console.log(isLogged)
-                // console.log(user.email)
-            })
+                })
             }
             
             getUserData()
 
-        }, [isLogged])
-        
+        }, [])       
+
 
     const logInWithEmail = (e) => {
         e.preventDefault()
         signInWithEmailAndPassword(auth, user.email, user.password)
-            .then(res => {
-                setUser(prevData => ({
-                    ...prevData,
-                    displayName: res.displayName,
-                    photoURL: res.photoURL
-                }))
+            .then(result => {
+                setUser({
+                    email: result.email,
+                    id: result.uid,
+                })
             })
             .catch(err => {
               if(err.code === 'auth/network-request-failed'){
@@ -72,25 +83,36 @@ export function AuthProvider({children}){
       }
 
     // Gmail Login
-    const logInWithPopUp = (e) => {
+    const logInWithPopUp = async (e) => {
         e.preventDefault()
         signInWithPopup(auth, googleProvider)
-            .then(res => {
-                setUser(res.user)
-                console.log(res)
-            })
+            .then(result => {
+                setUser({
+                    email: result.email,
+                    displayName: result.displayName,
+                    photoURL: result.photoURL,
+                    id: result.uid
+                })
+                  
+            })    
             .catch(err => {
-                setError(err.code)
+                if(err.code == 'auth/popup-blocked'){
+                    setError(err.code)
+                }else{
+                    setError(err.message)
+                }
             })
-            
       }
+
+
 
       
 
     const logOut = () => {
         signOut(auth)
-        alert('SIGNED OUT successfully!')
-        setIsLogged(false)
+        setIsLogged(!isLogged)
+        // setUser(undefined)
+        navigate('../login')
     }
 
 const value = {
