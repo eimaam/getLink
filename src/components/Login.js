@@ -5,6 +5,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { FcGoogle } from 'react-icons/fc';
 import ResetPass from './ResetPass';
 
+
 import { useAuth } from '../context/AuthContext';
 
 export default function Login(props) {
@@ -22,6 +23,14 @@ export default function Login(props) {
         // setUser(data)
     })
   }, [])
+
+  useEffect(() => {
+    if(error !== null){
+      setTimeout(()=>{
+          setError(null)
+      },5000)
+  }
+},[error])
 
   function handleChange(e){
     const {name, value} = e.target
@@ -90,7 +99,7 @@ export default function Login(props) {
             type='submit' 
             value='LOGIN' 
             />
-            <p className='alert'>{error}</p>
+            {error && <p className='alert'>{error}</p>}
             <button id="customButton" onClick={logInWithPopUp}>
               LOGIN with <FcGoogle />
             </button>

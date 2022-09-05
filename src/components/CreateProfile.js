@@ -6,6 +6,7 @@ import { collection, getDoc, addDoc, doc, setDoc, updateDoc } from 'firebase/fir
 import { useNavigate } from 'react-router-dom';
 import avatar from "../Assets/avatar.jpg"
 import { useAuth } from '../context/AuthContext';
+import { Circles } from 'react-loader-spinner'
 
 // Data
 let inputs = [
@@ -46,36 +47,36 @@ let inputs = [
 
 
 export default function CreateProfile() {
-  // Hook for checking if User is Logged in
-    useEffect(() => {
-      if(!data){
-        navigate('../signup')
-      }
-    })
-
-
+  const navigate = useNavigate()
   const { isLogged, user } = useAuth();
 
-  const navigate = useNavigate()
+  // Check if User is Logged in
+  useEffect(() => {
+    onAuthStateChanged(auth, data => {
+      data ? navigate('../create') : navigate('../signup')
+    })
+  }, [user])
+
+
+
+  // STATE Hooks:
+  const [state, setState] = useState({});
+  const [message, setMessage] = useState('') 
+  const [data, setData] = useState({
+    instagram: null,
+    twitter: null,
+    snapchat: null,
+    portfolio: null,
+    youtube: null,
+    apple: null,
+    spotify: null,
+    audiomack: null,
+    bio: null
+  })
+  
   const DocRef = collection(database, 'userDetails')
   
 
-    const [data, setData] = useState({
-      instagram: '',
-      twitter: '',
-      snapchat: '',
-      portfolio: '',
-      youtube: '',
-      apple: '',
-      spotify: '',
-      audiomack: '',
-      bio: ''
-    })
-
-    // useState HOOKS
-    const [state, setState] = useState({});
-    const [message, setMessage] = useState('') 
-    //
     
     // Profile Inputs
   let mappedInputs = inputs.map((element, index) => {
@@ -86,7 +87,7 @@ export default function CreateProfile() {
           type='text' 
           name={element.name}
           value={data.name}
-          placeholder={element.name + ' Handle @eimaam'}
+          placeholder={element.name + ' @eimaam'}
           onChange={(e) => handleChange(e)}
         />
       </div>
@@ -108,18 +109,12 @@ export default function CreateProfile() {
     e.preventDefault();
     // const document = await getDoc(DocRef)
     try{
-        await updateDoc(doc(collection(database, 'userDetails'), user.email),{
-          twitter: `twitter.com/${data.twitter}`,
-          instagram: `instagram.com/${data.instagram}`,
-          snapchat: `snapchat.com/${data.snapchat}`,
-          portfolio: data.portfolio,
-          youtube: data.youtube,
-          apple: data.apple,
-          spotify: data.spotify,
-          audiomack: data.audiomack,
-          bio: data.bio
+        await updateDoc(doc(collection(database, 'userDetails'), user.email), data)
+        .then(res => {
+          setTimeout(() => {
+            setMessage('Profile Updated...')
+          }, 2000); 
         })
-        .then(res => setMessage('Profile Update...'))
       } 
       catch(error){
         alert(error.message)
@@ -128,10 +123,10 @@ export default function CreateProfile() {
   
   
     function addField(e){
-      e.preventDefault();
+      // e.preventDefault();
       setState(inputs.push({
         icon: <FaLink className="profile--icon" />,
-        input: <input type="text" placeholder='Enter Link'/>
+        name: 'Enter Personal Link'
       })
       )
     }
@@ -140,26 +135,31 @@ export default function CreateProfile() {
   return (
     <div id='create'>
         <div id='avatar'>
-          <img src={avatar} alt="avatar" />
+          {user.photoURL ? <img src={user.photoURL} alt="avatar" /> : <Circles />}
           <div className='header--text'>
             <h3>{data.email}</h3>
-            <textarea
-            name='bio' 
-            cols={10}
-            placeholder="Bio goes here... Enter a brief about you"
-            value={data.bio}
-            onChange={(e) => handleChange(e)}
-            />
+        
+              <textarea
+              name='bio' 
+              cols={10}
+              placeholder="Bio goes here... Enter a brief about you"
+              value={data.bio}
+              onChange={(e) => handleChange(e)}
+              />
             
           </div>
         </div>
         <form onSubmit={updateProfile}>
-          {mappedInputs}
+          {/* mapped inputs */}
+            
+            {mappedInputs}
+
+             {/*  */}
           <button onClick={addField}>Add More Links</button> 
           {message && <p className='success'>{message}</p>}
           <br /> 
           <br /> 
-          <button>CREATE!</button>
+          <input type="submit" value="Update Profile"/>
         </form>
     </div>
   )

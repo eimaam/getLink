@@ -18,6 +18,16 @@ export default function Signup() {
         }
     )
 
+    useEffect(() => {
+        isLogged && navigate('../create')
+    }, [])
+
+    useEffect(() => {
+        error && setTimeout(() => {
+            setError(null)
+        }, 3000);
+    }, [error])
+
     function handleChange(e){
         const {name, value} = e.target
     
@@ -56,9 +66,7 @@ export default function Signup() {
         }
     }
     
-    useEffect(() => {
-        isLogged && navigate('../create')
-    }, [user])
+    
     
   return (
     <form id='signup' onSubmit={signUp}>
