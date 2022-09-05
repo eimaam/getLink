@@ -64,7 +64,7 @@ export default function Nav(){
                 <ul>
                     <li><HashLink to="/">HOME </HashLink></li>
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
-                    <li><HashLink to="#aboutContainer">About us</HashLink></li>
+                    <li><HashLink to="/profile" id="customButton">PROFILE</HashLink></li>
                     <li><HashLink to="#contactContainer">'Contact <span>us'</span></HashLink></li>
                     <li><NavLink to="/create" id="hireButton">create links</NavLink></li>
                     {isLogged && <li id="customButton" onClick={logOut}>SIGN OUT</li>}

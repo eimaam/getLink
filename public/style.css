@@ -362,6 +362,9 @@ header h2 {
     width: 100%;
   }
 }
+#avatar .header--text textarea {
+  width: 100%;
+}
 #avatar img {
   width: 150px;
   border-radius: 50%;
@@ -393,7 +396,7 @@ header h2 {
   border-radius: 0.5rem;
 }
 #profile .form--data > div {
-  width: 30%;
+  width: 100%;
   margin: auto;
   display: flex;
   flex-direction: row;

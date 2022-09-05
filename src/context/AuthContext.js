@@ -18,9 +18,10 @@ export function AuthProvider({children}){
     const navigate = useNavigate();
     const googleProvider = new GoogleAuthProvider();
     const [error, setError] = useState('')
-    const [isLogged, setIsLogged] = useState();
+    const [isLogged, setIsLogged] = useState(false);
     const [user, setUser] = useState({})
-    const [userInfo, setUserInfo] = useState({})
+    // const [userInfo, setUserInfo] = useState([])
+
 
     // firestore
     const DocRef = collection(database, 'userDetails');
@@ -29,58 +30,30 @@ export function AuthProvider({children}){
         const getUserData = async () => {
             onAuthStateChanged(auth, async data => {
                 if(data){
+                    setIsLogged(true)
                     try{
                         const document = await getDoc(doc(database, "userDetails", data.email))
                         if(!document.exists()){
                             await setDoc(doc(collection(database, "userDetails"), data.email),{
                             displayName: data.displayName,
                             photoURL: data.photoURL,
+                            email: data.email
                         })
                         }
-                        
-                        const querySnapshot = await getDocs(collection(database, "userDetails"));
-                        querySnapshot.forEach((doc) => {
-                        // doc.data() is never undefined for query doc snapshots
-                        console.log(doc.id, " => ", doc.data());
-                        })
-                        setUser(data)
-                        setIsLogged(!isLogged)
                     }
                     catch(err){
                         console.log(err.message)
                     }
                 }
+                setUser(data)
+                console.log(data)
+                // setIsLogged(false)
                 })
             }
-            
             getUserData()
 
         }, [])       
 
-
-    const logInWithEmail = (e) => {
-        e.preventDefault()
-        signInWithEmailAndPassword(auth, user.email, user.password)
-            .then(result => {
-                setUser({
-                    email: result.email,
-                    id: result.uid,
-                })
-            })
-            .catch(err => {
-              if(err.code === 'auth/network-request-failed'){
-                setError('Opps! Seems you are not connected to the internet...')
-              }else if(err.code === 'auth/wrong-password'){
-                setError('Incorrect Password!')
-              }else if(err.code === 'auth/user-not-found'){
-                setError('User not found!')
-              }else if(err.code === 'auth/user-disabled'){
-                setError('Account disabled!')
-              }else{
-                setError(err.code)
-              }
-            })
-      }
 
     // Gmail Login
     const logInWithPopUp = async (e) => {
@@ -93,7 +66,6 @@ export function AuthProvider({children}){
                     photoURL: result.photoURL,
                     id: result.uid
                 })
-                  
             })    
             .catch(err => {
                 if(err.code == 'auth/popup-blocked'){
@@ -104,19 +76,20 @@ export function AuthProvider({children}){
             })
       }
 
-
-
-      
-
+    //   LOGOUT function
     const logOut = () => {
         signOut(auth)
-        setIsLogged(!isLogged)
-        // setUser(undefined)
+        .then(() => {
+            localStorage.clear()
+            setIsLogged(false)
+            alert('Logged Out of session!')
+        })
         navigate('../login')
     }
 
+
+// set exports to variable Value 
 const value = {
-    logInWithEmail,
     logInWithPopUp,
     logOut,
     user,
@@ -125,7 +98,7 @@ const value = {
     setError,
     isLogged,
     setIsLogged,
-    googleProvider
+    googleProvider,
 }
   return (
     <AuthContext.Provider value={value}>

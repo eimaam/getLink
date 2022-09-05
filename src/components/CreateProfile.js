@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {FaInstagram, FaFacebook, FaTwitter, FaSnapchat, FaMusic, FaYoutube, FaSpotify, FaLink} from "react-icons/fa"
 import { app, auth, database } from '../firebaseConfig'
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, getDoc, addDoc, doc, setDoc } from 'firebase/firestore'
+import { collection, getDoc, addDoc, doc, setDoc, updateDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom';
 import avatar from "../Assets/avatar.jpg"
 import { useAuth } from '../context/AuthContext';
@@ -46,10 +46,19 @@ let inputs = [
 
 
 export default function CreateProfile() {
+  // Hook for checking if User is Logged in
+    useEffect(() => {
+      if(!data){
+        navigate('../signup')
+      }
+    })
+
+
   const { isLogged, user } = useAuth();
 
   const navigate = useNavigate()
   const DocRef = collection(database, 'userDetails')
+  
 
     const [data, setData] = useState({
       instagram: '',
@@ -60,14 +69,15 @@ export default function CreateProfile() {
       apple: '',
       spotify: '',
       audiomack: '',
+      bio: ''
     })
 
     // useState HOOKS
     const [state, setState] = useState({});
     const [message, setMessage] = useState('') 
     //
-    //  
-
+    
+    // Profile Inputs
   let mappedInputs = inputs.map((element, index) => {
     return (
       <div key={index}>
@@ -86,11 +96,11 @@ export default function CreateProfile() {
   
   function handleChange(e){
     const {name, value} = e.target;
-
     setData(prevData => ({
       ...prevData, 
       [name]:value
     }))
+    console.log(data)
   }
 
   // function to handle Form submit
@@ -98,32 +108,19 @@ export default function CreateProfile() {
     e.preventDefault();
     // const document = await getDoc(DocRef)
     try{
-      
-            await setDoc(doc(collection(database, 'userDetails'), user.email),{
-            instagram: data.instagram,
-            twitter: data.twitter,
-            snapchat: data.snapchat,
-            portfolio: data.portfolio,
-            youtube: data.youtube,
-            apple: data.apple,
-            spotify: data.spotify,
-            audiomack: data.audiomack,
-        }, {merge : true})
-        } 
-    // addDoc(DocRef, {
-    //     email: user.email,
-    //     instagram: data.instagram,
-    //     twitter: data.twitter,
-    //     snapchat: data.snapchat,
-    //     portfolio: data.portfolio,
-    //     youtube: data.youtube,
-    //     apple: data.apple,
-    //     spotify: data.spotify,
-    //     audiomack: data.audiomack,
-    //   })
-    //   .then((res) => {
-    //     setMessage('Note Uploaded successfully!')
-    //   })
+        await updateDoc(doc(collection(database, 'userDetails'), user.email),{
+          twitter: `twitter.com/${data.twitter}`,
+          instagram: `instagram.com/${data.instagram}`,
+          snapchat: `snapchat.com/${data.snapchat}`,
+          portfolio: data.portfolio,
+          youtube: data.youtube,
+          apple: data.apple,
+          spotify: data.spotify,
+          audiomack: data.audiomack,
+          bio: data.bio
+        })
+        .then(res => setMessage('Profile Update...'))
+      } 
       catch(error){
         alert(error.message)
       }
@@ -139,22 +136,21 @@ export default function CreateProfile() {
       )
     }
 
-    // Hook for checking if User is Logged in
-    useEffect(() => {
-      onAuthStateChanged(auth, data => {
-          if(!data) navigate('../signup')
-          !isLogged && navigate('../signup')
-      })
-    }, [user])
-
 
   return (
     <div id='create'>
         <div id='avatar'>
           <img src={avatar} alt="avatar" />
           <div className='header--text'>
-            <h3>{user.email}</h3>
-            <i>'Bio goes here...Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, voluptate?' </i>
+            <h3>{data.email}</h3>
+            <textarea
+            name='bio' 
+            cols={10}
+            placeholder="Bio goes here... Enter a brief about you"
+            value={data.bio}
+            onChange={(e) => handleChange(e)}
+            />
+            
           </div>
         </div>
         <form onSubmit={updateProfile}>
