@@ -6,6 +6,7 @@ import { collection, getDoc, addDoc, doc, setDoc, updateDoc } from 'firebase/fir
 import { useNavigate } from 'react-router-dom';
 import avatar from "../Assets/avatar.jpg"
 import { useAuth } from '../context/AuthContext';
+import { useData } from '../context/DataContext'
 import { Circles } from 'react-loader-spinner'
 
 // Data
@@ -49,6 +50,9 @@ let inputs = [
 export default function CreateProfile() {
   const navigate = useNavigate()
   const { isLogged, user } = useAuth();
+  // const { handleChange } = useData();
+
+  
 
   // Check if User is Logged in
   useEffect(() => {
@@ -104,8 +108,8 @@ export default function CreateProfile() {
     console.log(data)
   }
 
-  // function to handle Form submit
-  const updateProfile = async (e) => {
+  // function to add data to UserInfo collection:
+  const addToUserInfoDoc = async (e) => {
     e.preventDefault();
     // const document = await getDoc(DocRef)
     try{
@@ -149,7 +153,7 @@ export default function CreateProfile() {
             
           </div>
         </div>
-        <form onSubmit={updateProfile}>
+        <form onSubmit={addToUserInfoDoc}>
           {/* mapped inputs */}
             
             {mappedInputs}

@@ -4,30 +4,32 @@ import { auth } from '../firebaseConfig'
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { FcGoogle } from 'react-icons/fc';
 import ResetPass from './ResetPass';
+import { toast } from 'react-toastify'
 
 
 import { useAuth } from '../context/AuthContext';
+import { useData } from '../context/DataContext';
 
 export default function Login(props) {
+  const navigate = useNavigate();
+  // from contexts
   const { logInWithPopUp, error, setError, user, setUser } = useAuth();
-
+  // Data state
   const [data, setData] = useState({
     email: '',
     password: '',
   })
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
     onAuthStateChanged(auth, data => {
         if(data) navigate('../profile')
-        // setUser(data)
     })
   }, [])
 
   useEffect(() => {
     if(error !== null){
       setTimeout(()=>{
-          setError(null)
+          toast.error(null)
       },5000)
   }
 },[error])
@@ -53,15 +55,15 @@ export default function Login(props) {
         })
         .catch(err => {
           if(err.code === 'auth/network-request-failed'){
-            setError('Opps! Seems you are not connected to the internet...')
+            toast.error('Opps! Seems you are not connected to the internet...')
           }else if(err.code === 'auth/wrong-password'){
-            setError('Incorrect Password!')
+            toast.error('Incorrect Password!')
           }else if(err.code === 'auth/user-not-found'){
-            setError('User not found!')
+            toast.error('User not found!')
           }else if(err.code === 'auth/user-disabled'){
-            setError('Account disabled!')
+            toast.error('Account disabled!')
           }else{
-            setError(err.code)
+            toast.error(err.code)
           }
         })
   }

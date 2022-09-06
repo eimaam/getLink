@@ -5,10 +5,12 @@ import { app, auth, database} from '../firebaseConfig'
 import { useAuth } from '../context/AuthContext';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { addDoc, collection, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
+import { useData } from '../context/DataContext';
 
 export default function Signup() {
     const DocRef = collection(database, 'userDetails')
     const { error, setError, isLogged, user, setUser} = useAuth();
+    const { userInfo } = useData();
     const navigate = useNavigate();
     const [data, setData] = useState({
             email:"",
@@ -20,11 +22,7 @@ export default function Signup() {
 
     useEffect(() => {
         onAuthStateChanged(auth, data => {
-            if(data && user.displayName){
-                navigate('../profile')
-            }else{
-                navigate('../register')
-            } 
+            if(data) navigate('../profile') 
         })
     }, [])
     

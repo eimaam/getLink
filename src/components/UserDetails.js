@@ -7,12 +7,22 @@ import { useNavigate } from 'react-router-dom';
 import avatar from "../Assets/avatar.jpg"
 import { useAuth } from '../context/AuthContext';
 import { Circles, CirclesWithBar } from 'react-loader-spinner'
+import { useData } from '../context/DataContext';
 
 
 export default function UserDetails() {
   const navigate = useNavigate()
-  const { isLogged, user, loading } = useAuth();
+  const { isLogged, user, } = useAuth();
+  const { userInfo, fetchUserDetail } = useData();
+  const [readOnly, setReadOnly] = useState(true)
 
+  function edit(){
+    setReadOnly(!readOnly)
+  }
+  useEffect(() => {
+    fetchUserDetail()
+    console.log(userInfo.username)
+  }, [])
   useEffect(() => {
     onAuthStateChanged(auth, data => {
         if(!data) navigate('../login')
@@ -37,9 +47,8 @@ export default function UserDetails() {
     }))
     console.log(data)
   }
-
 //   function to handle Form submit
-  const updateProfile = async (e) => {
+  const addToUserInfoDoc = async (e) => {
     e.preventDefault();
     // const document = await getDoc(DocRef)
     try{
@@ -55,6 +64,7 @@ export default function UserDetails() {
       }
   }
 
+  
   return (
     <div id='userDetails'>
         <div id='avatar'>
@@ -67,7 +77,7 @@ export default function UserDetails() {
             {/* <h3>{user.email}</h3>               */}
           </div>
         </div>
-        <form onSubmit={updateProfile}>
+        <form onSubmit={addToUserInfoDoc}>
             <div>
                 <label htmlFor="About">
                     About:
@@ -84,9 +94,14 @@ export default function UserDetails() {
                 <label htmlFor="Username">
                     Username:
                 </label>
-                {/* {
-                    user.displayName ? <input type="text" value={user.displayName}/>
-                    : */}
+                {
+                    userInfo.username 
+                    ? 
+                    <input 
+                    type="text" 
+                    value={userInfo.username}
+                    />
+                    :
                     <input 
                     type="text" 
                     name='username' 
@@ -95,7 +110,7 @@ export default function UserDetails() {
                     required
                     pattern='[A-Za-z0-9_]{1,15}'
                     />
-                {/* } */}
+                }
             </div>
             <div>
                 <label htmlFor="Full Name">
@@ -112,6 +127,7 @@ export default function UserDetails() {
             <br />
 
             <input type='submit' value='UPDATE PROFILE' />
+            <button onClick={edit}>EDIT DATA</button>
             {message && <p className='success'>{message}</p>}
           <br /> 
           <br /> 

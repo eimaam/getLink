@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { createContext, useContext } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 // firebase auth and firestore imports
 import { GoogleAuthProvider, onAuthStateChanged, signOut, signInWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
@@ -29,7 +30,6 @@ export function AuthProvider({children}){
 
       useEffect(() => {
         const getUserData = async () => {
-            // setLoading(true)
             onAuthStateChanged(auth, async data => {
                 if(data){
                     setIsLogged(true)
@@ -52,9 +52,10 @@ export function AuthProvider({children}){
                 // setLoading(false)
                 })
             }
+            // setUser(null)
             getUserData()
 
-        }, [])       
+        }, [])   
 
 
     // Gmail Login
@@ -84,7 +85,7 @@ export function AuthProvider({children}){
         .then(() => {
             localStorage.clear()
             setIsLogged(false)
-            alert('Logged Out of session!')
+            toast.info('Logged Out of session!')
         })
         navigate('../login')
     }

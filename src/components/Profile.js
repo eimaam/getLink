@@ -10,36 +10,45 @@ import { useAuth } from '../context/AuthContext'
 
 import avatar from "../Assets/avatar.jpg"
 import { Circles, ProgressBar } from 'react-loader-spinner'
+import { useData } from '../context/DataContext'
 
 
 export default function Profile() {
-    
+    const { userInfo, setUserInfo, fetchUserDetail } = useData();
+    const { logOut, user, isLogged } = useAuth();
+
+    useEffect(() => {
+        fetchUserDetail()
+    }, [])
     // check if user is Logged in... navigate to LOGIN page if not logged in
     useEffect(() => {
         onAuthStateChanged(auth, data => {
-            if(!data) navigate('../login')
+            if(!data){
+                navigate('../login')
+            }else if(!userInfo.username){
+                navigate('../register')
+            }
         })
     }, [])
+
     
-    const { logOut, user, isLogged } = useAuth();
 
     const navigate = useNavigate()
     
-    const [userInfo, setUserInfo] = useState([])
+    // const [userInfo, setUserInfo] = useState([])
 
-    const fetchUserDetail = async() => {
-        const data = await getDoc(doc(database, "userDetails", user.email))
-        .then(res => {
-            setUserInfo(res.data())
-            console.log(userInfo)
-        })
-        .catch(err => console.log(err.message))
-    }
+    // const fetchUserDetail = async() => {
+    //     const data = await getDoc(doc(database, "userDetails", user.email))
+    //     .then(res => {
+    //         setUserInfo(res.data())
+    //         console.log(userInfo)
+    //     })
+    //     .catch(err => console.log(err.message))
+    // }
+
 
     // fetch User's detail on load
-    useEffect(() => {
-        fetchUserDetail()
-    }, [user])
+    
 
     const data = [
         {
@@ -94,7 +103,7 @@ export default function Profile() {
                 </a>
             </div>
             :
-            <div>
+            <div key={index}>
                 <Link to="../register">ADD DATA</Link>
             </div>
             )
@@ -116,10 +125,9 @@ export default function Profile() {
         <div id='avatar'>
           {userInfo.photoURL ? <img src={userInfo.photoURL} alt="avatar" /> : <Circles /> }
           <div className='header--text'>
-            {userInfo.displayName ? <h3>{userInfo.displayName}</h3> : <ProgressBar />}
             {userInfo.username ? <h4>@{userInfo.username}</h4> : <ProgressBar />}
-            <h4>Bio:</h4>
-            <b>{userInfo.bio}</b> 
+            {userInfo.displayName ? <h3>{userInfo.displayName}</h3> : <p>Loading...</p>}
+            <p>{userInfo.bio}</p> 
           </div>
         </div>
         <div className='form--data'>
