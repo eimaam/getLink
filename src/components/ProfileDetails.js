@@ -41,6 +41,10 @@ export default function ProfileDetails() {
   return (
     <form id='signup' onSubmit={handleSubmit}>
         <div className='signup--div'>
+                <label htmlFor="Username">
+                    Username:
+                </label>
+                <input type="text" name='username' value={data.username} onChange={(e) => handleChange(e)}/>
                 <label htmlFor="First Name">
                     First Name:
                 </label>
@@ -53,19 +57,10 @@ export default function ProfileDetails() {
                     Last Name:
                 </label>
                 <input type="text" name='l_name' value={data.l_name} onChange={(e) => handleChange(e)}/>
-                <label htmlFor="Username">
-                    Username:
-                </label>
-                <input type="text" name='username' value={data.username} onChange={(e) => handleChange(e)}/>
                 
-                <label htmlFor="Password">
-                    Enter Password:
-                </label>
-                <input type="password" name='password' value={data.password} onChange={(e) => handleChange(e)}/>
                  
-                <label htmlFor="Submit">
-                    <input type='submit' value='UPDATE PROFILE' />
-                </label>
+                
+                <input type='submit' value='UPDATE PROFILE' />
         </div>
     </form>
   )

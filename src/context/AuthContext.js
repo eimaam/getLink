@@ -19,6 +19,7 @@ export function AuthProvider({children}){
     const googleProvider = new GoogleAuthProvider();
     const [error, setError] = useState('')
     const [isLogged, setIsLogged] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({})
     // const [userInfo, setUserInfo] = useState([])
 
@@ -28,6 +29,7 @@ export function AuthProvider({children}){
 
       useEffect(() => {
         const getUserData = async () => {
+            // setLoading(true)
             onAuthStateChanged(auth, async data => {
                 if(data){
                     setIsLogged(true)
@@ -47,7 +49,7 @@ export function AuthProvider({children}){
                 }
                 setUser(data)
                 console.log(data)
-                // setIsLogged(false)
+                // setLoading(false)
                 })
             }
             getUserData()

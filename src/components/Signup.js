@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { app, auth, database} from '../firebaseConfig'
 import { useAuth } from '../context/AuthContext';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { addDoc, collection, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
 
 export default function Signup() {
@@ -19,9 +19,15 @@ export default function Signup() {
     )
 
     useEffect(() => {
-        isLogged && navigate('../create')
+        onAuthStateChanged(auth, data => {
+            if(data && user.displayName){
+                navigate('../profile')
+            }else{
+                navigate('../register')
+            } 
+        })
     }, [])
-
+    
     useEffect(() => {
         error && setTimeout(() => {
             setError(null)

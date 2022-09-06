@@ -29,7 +29,6 @@ export default function Profile() {
 
     const fetchUserDetail = async() => {
         const data = await getDoc(doc(database, "userDetails", user.email))
-        // const data = await getDocs(DocRef, user.email)
         .then(res => {
             setUserInfo(res.data())
             console.log(userInfo)
@@ -95,7 +94,9 @@ export default function Profile() {
                 </a>
             </div>
             :
-            <p>NO DATA ADDED</p>
+            <div>
+                <Link to="../register">ADD DATA</Link>
+            </div>
             )
     })
     
@@ -116,6 +117,7 @@ export default function Profile() {
           {userInfo.photoURL ? <img src={userInfo.photoURL} alt="avatar" /> : <Circles /> }
           <div className='header--text'>
             {userInfo.displayName ? <h3>{userInfo.displayName}</h3> : <ProgressBar />}
+            {userInfo.username ? <h4>@{userInfo.username}</h4> : <ProgressBar />}
             <h4>Bio:</h4>
             <b>{userInfo.bio}</b> 
           </div>

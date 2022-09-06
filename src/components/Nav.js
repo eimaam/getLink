@@ -51,8 +51,12 @@ export default function Nav(){
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="#aboutContainer">About us</HashLink></li>
                     <li><HashLink to="#contactContainer">Contact <span>us</span></HashLink></li>
-                    <li><NavLink to="/create" id="customButton">create links</NavLink></li>
+                    {
+                    isLogged ? 
                     <li><NavLink to="/profile" id="customButton">profile</NavLink></li>
+                    :
+                    <li><NavLink to="/login" id="customButton">LOGIN</NavLink></li>
+                    }
                     {isLogged && <li id="customButton" onClick={logOut}>SIGN OUT</li>}
                 </ul>
                 <FaBars className="FaBars" onClick={showHideNav}/>
@@ -66,7 +70,7 @@ export default function Nav(){
                     <li><HashLink to="#skillsContainer">How-to</HashLink></li>
                     <li><HashLink to="/profile" id="customButton">PROFILE</HashLink></li>
                     <li><HashLink to="#contactContainer">'Contact <span>us'</span></HashLink></li>
-                    <li><NavLink to="/create" id="hireButton">create links</NavLink></li>
+                    {/* <li><NavLink to="/create" id="hireButton">create links</NavLink></li> */}
                     {isLogged && <li id="customButton" onClick={logOut}>SIGN OUT</li>}
                 </ul>
                 {/* <p>&copy; Tech Desk Inc.</p> */}

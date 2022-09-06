@@ -13,7 +13,7 @@
     gap: 1rem;
 }
 @mixin desktopSectionSize{
-    width: 70%;
+    width: 60%;
     height: 100vh;
     margin: auto;
 }
@@ -152,6 +152,17 @@ button, input[type=submit]{
         transform: scale(1.05);
     }
 }
+input[type=file]{
+    border: none;
+    cursor: pointer;
+    // border: solid red;
+}
+input[type=file]::-webkit-file-upload-button{
+    @extend button;
+    margin-inline: 1rem;
+    padding: 0.5rem;
+    border: none
+}
 // NAV Component styling
 nav{
     @include flex(row);
@@ -283,7 +294,7 @@ header{
             padding-block: 0.5rem;
             margin: auto;
         }
-        input{
+        input,textarea{
             width: 40%;
             padding: 1rem;
 
@@ -327,7 +338,21 @@ header{
         margin: auto;
     }
 }
-// 
+
+
+//UserDetails/Registration details page styling
+#userDetails{
+    @extend #create;
+
+    form{
+
+        >div{
+            @include flex(column);
+            
+        }
+    }
+    
+}
 
 // PROFILE component styling
 #profile{

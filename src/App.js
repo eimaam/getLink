@@ -11,6 +11,7 @@ import { app } from './firebaseConfig'
 import ProfileDetails from "./components/ProfileDetails";
 import ResetPass from "./components/ResetPass";
 import { AuthProvider } from "./context/AuthContext";
+import UserDetails from "./components/UserDetails";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Nav />
       <Routes>
         <Route exact path="/" element={<Header />} /> 
+        <Route path="/register" element={<UserDetails />} /> 
         <Route path="/create" element={<CreateProfile />} /> 
         <Route path="/profile" element={<Profile />} /> 
         <Route path="/signup" element={<Signup />} /> 
