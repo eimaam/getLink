@@ -14,11 +14,7 @@ export default function UserDetails() {
   const navigate = useNavigate()
   const { isLogged, user, } = useAuth();
   const { userInfo, fetchUserDetail } = useData();
-  const [readOnly, setReadOnly] = useState(true)
-
-  function edit(){
-    setReadOnly(!readOnly)
-  }
+ 
   useEffect(() => {
     fetchUserDetail()
     console.log(userInfo.username)
@@ -127,7 +123,7 @@ export default function UserDetails() {
             <br />
 
             <input type='submit' value='UPDATE PROFILE' />
-            <button onClick={edit}>EDIT DATA</button>
+            {/* <button onClick={edit}>EDIT DATA</button> */}
             {message && <p className='success'>{message}</p>}
           <br /> 
           <br /> 

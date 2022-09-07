@@ -8,6 +8,7 @@ import avatar from "../Assets/avatar.jpg"
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext'
 import { Circles } from 'react-loader-spinner'
+import { toast } from 'react-toastify';
 
 // Data
 let inputs = [
@@ -116,7 +117,7 @@ export default function CreateProfile() {
         await updateDoc(doc(collection(database, 'userDetails'), user.email), data)
         .then(res => {
           setTimeout(() => {
-            setMessage('Profile Updated...')
+            toast.success('Profile Updated...')
           }, 2000); 
         })
       } 

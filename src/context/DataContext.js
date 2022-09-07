@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { database } from '../firebaseConfig'
 import { useAuth } from './AuthContext'
 import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 
 const DataContext = createContext()
@@ -74,7 +75,7 @@ export function DataProvider({ children }){
             setUserInfo(res.data())
             console.log(userInfo)
         })
-        .catch(err => console.log(err.message))
+        .catch(err => toast.error(err.message))
     }
 
 

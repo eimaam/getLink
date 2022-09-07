@@ -4,8 +4,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { app, auth, database} from '../firebaseConfig'
 import { useAuth } from '../context/AuthContext';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { addDoc, collection, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, setDoc } from 'firebase/firestore'
 import { useData } from '../context/DataContext';
+import { toast } from 'react-toastify';
 
 export default function Signup() {
     const DocRef = collection(database, 'userDetails')
@@ -13,6 +14,7 @@ export default function Signup() {
     const { userInfo } = useData();
     const navigate = useNavigate();
     const [data, setData] = useState({
+            displayName:"",
             email:"",
             username: "",
             password:"",
@@ -44,26 +46,33 @@ export default function Signup() {
 
     function signUp(e){
         e.preventDefault()
-        if(data.password != data.confirm_password){
-            return setError('Passwords do not match')
+        if(data.password != data.confirm_password ){
+            return toast.error('Passwords do not match')
+        }else if(data.password.length < 6){
+            toast.error('Password must be more min of 6 characters')
         }else{
             createUserWithEmailAndPassword(auth, data.email, data.password)
             .then(res => {
                 setUser({
                     email: data.email,
                     photoURL: res.photoURL,
-                    displayName: res.displayName,
+                    displayName: data.displayName,
                     username: data.username
+                })
+                setDoc(doc(DocRef, data.email), {
+                    email: data.email,
+                    username: data.username,
+                    displayName: data.displayName
                 })
                 
             })
             .catch(err => {
                 if(err.code === 'auth/weak-password'){
-                    setError('Weak Password! Password should be at least 6 characters')
+                    toast.error('Weak Password! Password should be at least 6 characters')
                 }else if(err.code === 'auth/email-already-in-use'){
-                    setError('Account already exist!')
+                    toast.error('Account already exist!')
                 }else{
-                    alert(err.code)
+                    toast.error(err.code)
                 }
                 
             })
@@ -87,7 +96,18 @@ export default function Signup() {
                 onChange={(e) => handleChange(e)}
                 />
 
-                <label htmlFor="Email">
+                <label htmlFor="Full Name">
+                    Full Name:
+                </label>
+                <input 
+                type="text" 
+                name='displayName' 
+                value={data.displayName} 
+                required
+                onChange={(e) => handleChange(e)}
+                />
+
+                <label htmlFor="Username">
                     Username:
                 </label>
                 <input 
